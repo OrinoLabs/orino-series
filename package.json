@@ -1,0 +1,11 @@
+{
+  "name": "orino-series",
+  "version": "0.0.0",
+  "description": "Series library.",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Bürge <michael@orino.ch>",
+  "license": "UNLICENSED"
+}
