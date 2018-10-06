@@ -11,10 +11,11 @@ export class ArraySeries extends Series {
 
   constructor(dimensions: Dimension[], data: any[][]) {
     super(dimensions);
+    this.data = data;
   }
 
 
-  nth(idx: number, dimensions?: Dimension[]): any {
+  nth(idx: number, dimensions?: Dimension[]): any[][] {
     if (dimensions) {
       let indices = this.getDimensionIndices(dimensions);
       return indices.map((dimIdx) => this.data[idx][dimIdx]);
