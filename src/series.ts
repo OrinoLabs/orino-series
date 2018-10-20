@@ -11,33 +11,39 @@ export abstract class Series {
   readonly dimensions: Dimension[];
 
   /**
-   * 
+   * Dimension indices by dimension id.
    */
-  readonly dimensionIndices: {[id: string]: number};
+  private indices: {[id: string]: number};
 
 
   constructor(dimensions: Dimension[]) {
     this.dimensions = dimensions;
 
-    this.dimensionIndices = {};
+    this.indices = {};
     this.dimensions.forEach((dim, idx) => {
-      this.dimensionIndices[dim.id] = idx;
+      this.indices[dim.id] = idx;
     });
   }
 
 
   hasDimension(dimension: Dimension): boolean {
-    return dimension.id in this.dimensionIndices;
+    return dimension.id in this.indices;
   }
 
 
-  getDimensionIndex(dimension: Dimension): number {
-    return this.dimensionIndices[dimension.id];
+  dimensionIndex(dimension: Dimension): number {
+    if (!(dimension.id in this.indices)) {
+      throw new Error(`No such dimension: ${dimension.id}`);
+    }
+    return this.indices[dimension.id];
   }
 
 
-  getDimensionIndices(dimensions: Dimension[]): number[] {
-    return dimensions.map((dim) => this.dimensionIndices[dim.id]);
+  dimensionIndices(dimensions?: Dimension[]): number[] {
+    if (!dimensions) {
+      dimensions = this.dimensions;
+    }
+    return dimensions.map((dim) => this.dimensionIndex(dim));
   }
 
 
