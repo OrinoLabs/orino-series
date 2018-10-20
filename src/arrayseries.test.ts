@@ -19,7 +19,7 @@ describe('ArraySeries', () => {
     expect(series.length).to.equal(3);
   });
 
-  describe('#valueAt', () => {
+  it('#valueAt', () => {
     const data = [[0, 100], [1, 110], [2, 120]];
     const series = new ArraySeries([gnaDim, fuDim], data);
 
@@ -36,6 +36,23 @@ describe('ArraySeries', () => {
 
     expect(series.valueAt(2, 0, 0)).to.equal(2);
     expect(series.valueAt(2, 0, 1)).to.equal(120);
+  });
+
+
+  describe('#single', () => {
+
+    it('should return single value', () => {
+      const series = new ArraySeries([gnaDim, fuDim], testData);
+
+      expect(series.single(0, gnaDim)).to.equal(0);
+      expect(series.single(1, gnaDim)).to.equal(1);
+      expect(series.single(2, gnaDim)).to.equal(2);
+
+      expect(series.single(0, fuDim)).to.equal(100);
+      expect(series.single(1, fuDim)).to.equal(101);
+      expect(series.single(2, fuDim)).to.equal(102);
+    });
+
   });
 
   describe('#nth', () => {
@@ -63,18 +80,33 @@ describe('ArraySeries', () => {
 
   });
 
-  describe('#single', () => {
+  describe('#at', () => {
 
-    it('should return single value', () => {
-      const series = new ArraySeries([gnaDim, fuDim], testData);
+    it('should return all values for locator', () => {
+      const data = [[0, 100], [1, 110], [2, 120]];
+      const series = new ArraySeries([gnaDim, fuDim], data);
 
-      expect(series.single(0, gnaDim)).to.equal(0);
-      expect(series.single(1, gnaDim)).to.equal(1);
-      expect(series.single(2, gnaDim)).to.equal(2);
+      expect(series.at(0  )).to.deep.equal([0,   100]);
+      expect(series.at(0.3)).to.deep.equal([0.3, 103]);
+      expect(series.at(0.7)).to.deep.equal([0.7, 107]);
+      expect(series.at(1  )).to.deep.equal([1,   110]);
+      expect(series.at(1.5)).to.deep.equal([1.5, 115]);
+      expect(series.at(2  )).to.deep.equal([2,   120]);
+    });
 
-      expect(series.single(0, fuDim)).to.equal(100);
-      expect(series.single(1, fuDim)).to.equal(101);
-      expect(series.single(2, fuDim)).to.equal(102);
+    it('should return only values for specified dimensions', () => {
+      const data = [[0, 100], [1, 110], [2, 120]];
+      const series = new ArraySeries([gnaDim, fuDim], data);
+
+      expect(series.at(0, [])).to.deep.equal([]);
+
+      expect(series.at(0,   [gnaDim])).to.deep.equal([0]);
+      expect(series.at(0.3, [gnaDim])).to.deep.equal([0.3]);
+      expect(series.at(1,   [gnaDim])).to.deep.equal([1]);
+
+      expect(series.at(1,   [fuDim])).to.deep.equal([110]);
+      expect(series.at(1.7, [fuDim])).to.deep.equal([117]);
+      expect(series.at(2,   [fuDim])).to.deep.equal([120]);
     });
 
   });

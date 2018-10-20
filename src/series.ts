@@ -101,6 +101,11 @@ export abstract class Series {
   }
 
 
-  // abstract at(locator: number, dimensions?: Dimension[]): any[];
+  at(locator: number, dimensions?: Dimension[]): any[] {
+    const idx = Math.floor(locator);
+    const fraction = locator - idx;
+    const indices = this.dimensionIndices(dimensions || this.dimensions);
+    return indices.map((dimIdx) => this.valueAt(idx, fraction, dimIdx));
+  }
 
 }
