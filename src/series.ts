@@ -26,6 +26,11 @@ export abstract class Series {
   }
 
 
+  hasDimension(dimension: Dimension): boolean {
+    return dimension.id in this.dimensionIndices;
+  }
+
+
   getDimensionIndex(dimension: Dimension): number {
     return this.dimensionIndices[dimension.id];
   }

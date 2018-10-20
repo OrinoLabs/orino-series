@@ -1,6 +1,7 @@
 
 import { Dimension } from "./dimension";
 import { Series } from "./series";
+import { TimeSeriesMixin } from './timeseries';
 
 
 export class ArraySeries extends Series {
@@ -25,3 +26,7 @@ export class ArraySeries extends Series {
   }
 
 }
+
+
+
+export const ArrayTimeSeries = TimeSeriesMixin(ArraySeries);

@@ -1,17 +1,19 @@
 
 import { expect } from 'chai';
 
-import { Dimension, ArraySeries} from './index';
+import { Dimension, ArraySeries, ArrayTimeSeries } from './index';
+import { timeDimension } from './timeseries';
+
+
+const gnaDim = new Dimension('GNA');
+const fuDim = new Dimension('FU');
+const testData = [[0, 100], [1, 101], [2, 102]];
 
 
 describe('ArraySeries', () => {
 
   it('should construct', () => {
-    const gnaDim = new Dimension('GNA');
-    const fuDim = new Dimension('FU');
-    const dimensions = [gnaDim, fuDim];
-    const data = [[0, 100], [1, 101], [2, 102]];
-    const series = new ArraySeries(dimensions, data);
+    const series = new ArraySeries([gnaDim, fuDim], testData);
 
     expect(series instanceof ArraySeries).to.equal(true);
   });
@@ -19,11 +21,8 @@ describe('ArraySeries', () => {
   describe('#nth', () => {
 
     it('should return all values for index', () => {
-      const gnaDim = new Dimension('GNA');
-      const fuDim = new Dimension('FU');
-      const dimensions = [gnaDim, fuDim];
       const data = [[0, 100], [1, 101], [2, 102]];
-      const series = new ArraySeries(dimensions, data);
+      const series = new ArraySeries([gnaDim, fuDim], data);
 
       expect(series.nth(0)).to.deep.equal([0, 100]);
       expect(series.nth(1)).to.deep.equal([1, 101]);
@@ -31,11 +30,7 @@ describe('ArraySeries', () => {
     });
 
     it('should return only values for specified dimensions', () => {
-      const gnaDim = new Dimension('GNA');
-      const fuDim = new Dimension('FU');
-      const dimensions = [gnaDim, fuDim];
-      const data = [[0, 100], [1, 101], [2, 102]];
-      const series = new ArraySeries(dimensions, data);
+      const series = new ArraySeries([gnaDim, fuDim], testData);
 
       expect(series.nth(0, [])).to.deep.equal([]);
 
@@ -51,11 +46,7 @@ describe('ArraySeries', () => {
   describe('#single', () => {
 
     it('should return single value', () => {
-      const gnaDim = new Dimension('GNA');
-      const fuDim = new Dimension('FU');
-      const dimensions = [gnaDim, fuDim];
-      const data = [[0, 100], [1, 101], [2, 102]];
-      const series = new ArraySeries(dimensions, data);
+      const series = new ArraySeries([gnaDim, fuDim], testData);
 
       expect(series.single(0, gnaDim)).to.equal(0);
       expect(series.single(1, gnaDim)).to.equal(1);
@@ -66,6 +57,23 @@ describe('ArraySeries', () => {
       expect(series.single(2, fuDim)).to.equal(102);
     });
 
+  });
+
+});
+
+
+describe('ArrayTimeSeries', () => {
+
+  it('should construct', () => {
+    const series = new ArrayTimeSeries([timeDimension, gnaDim], testData);
+
+    expect(series instanceof ArrayTimeSeries).to.equal(true);
+    expect(series.isTimeSeries).to.equal(true);
+  });
+
+  it('should not construct without time dimension', () => {
+    expect(() => new ArrayTimeSeries([gnaDim, fuDim], testData))
+      .to.throw(Error);
   });
 
 });
