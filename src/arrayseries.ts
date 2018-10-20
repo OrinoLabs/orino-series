@@ -16,6 +16,11 @@ export class ArraySeries extends Series {
   }
 
 
+  get length(): number {
+    return this.data.length;
+  }
+
+
   nth(idx: number, dimensions?: Dimension[]): any[][] {
     if (dimensions) {
       let indices = this.dimensionIndices(dimensions);

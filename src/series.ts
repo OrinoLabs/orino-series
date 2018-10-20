@@ -46,6 +46,11 @@ export abstract class Series {
     return dimensions.map((dim) => this.dimensionIndex(dim));
   }
 
+  /**
+   * The series' length.
+   */
+  abstract get length(): number;
+
 
   /**
    * Returns the nth data point.

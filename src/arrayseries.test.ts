@@ -15,7 +15,8 @@ describe('ArraySeries', () => {
   it('should construct', () => {
     const series = new ArraySeries([gnaDim, fuDim], testData);
 
-    expect(series instanceof ArraySeries).to.equal(true);
+    expect(series).to.be.instanceOf(ArraySeries);
+    expect(series.length).to.equal(3);
   });
 
   describe('#nth', () => {
