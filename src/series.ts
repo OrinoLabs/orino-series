@@ -31,7 +31,7 @@ export abstract class Series {
   }
 
 
-  dimensionIndex(dimension: Dimension): number {
+  dimensionIndex(dimension: Dimension<any>): number {
     if (!(dimension.id in this.indices)) {
       throw new Error(`No such dimension: ${dimension.id}`);
     }
@@ -53,18 +53,26 @@ export abstract class Series {
 
 
   /**
-   * Returns the nth data point.
-   * @param idx - The index.
+   * Returns a single value.
+   * @param idx - Point index.
+   * @param dimIndex - Dimension index.
    */
-  abstract nth(idx: number): any[];
+  abstract value(idx: number, dimIndex: number): any;
 
 
   /**
-   * Returns the given dimension values of the nth data point.
-   * @param idx - The index.
-   * @param dimensions - The dimension values are returned for.
+   * Reurns a single value, interpolating if necessary.
+   * @param idx 
+   * @param fraction 
+   * @param dimIdx
    */
-  abstract nth(idx: number, dimensions: Dimension[]): any[];
+  valueAt(idx: number, fraction: number, dimIdx): any {
+    if (fraction === 0) {
+      return this.value(idx, dimIdx);
+    } else {
+      return this.dimensions[dimIdx].valueAt(this, idx, fraction, dimIdx);
+    }
+  }
 
 
   /**
@@ -73,7 +81,26 @@ export abstract class Series {
    * @param dimension 
    */
   single<T>(idx: number, dimension: Dimension<T>): T {
-    return this.nth(idx, [dimension])[0];
+    return this.value(idx, this.dimensionIndex(dimension));
   }
+
+
+  /**
+   * Returns the nth data point.
+   * Optionally only returning the specified dimensions.
+   * @param idx - The index.
+   * @param [dimensions] - The dimensions to return (optional).
+   * @return The requested dimension values.
+   */
+  nth(idx: number, dimensions?: Dimension[]): any[][] {
+    if (!dimensions) {
+      dimensions = this.dimensions;
+    }
+    let indices = this.dimensionIndices(dimensions);
+    return indices.map((dimIdx) => this.value(idx, dimIdx));
+  }
+
+
+  // abstract at(locator: number, dimensions?: Dimension[]): any[];
 
 }

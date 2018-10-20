@@ -19,6 +19,25 @@ describe('ArraySeries', () => {
     expect(series.length).to.equal(3);
   });
 
+  describe('#valueAt', () => {
+    const data = [[0, 100], [1, 110], [2, 120]];
+    const series = new ArraySeries([gnaDim, fuDim], data);
+
+    expect(series.valueAt(0, 0, 0)).to.equal(0);
+    expect(series.valueAt(0, 0, 1)).to.equal(100);
+
+    expect(series.valueAt(1, 0, 0)).to.equal(1);
+    expect(series.valueAt(1, 0, 1)).to.equal(110);
+
+    expect(series.valueAt(1, 0.5, 0)).to.equal(1.5);
+    expect(series.valueAt(1, 0.5, 1)).to.equal(115);
+    expect(series.valueAt(1, 0.7, 0)).to.equal(1.7);
+    expect(series.valueAt(1, 0.7, 1)).to.equal(117);
+
+    expect(series.valueAt(2, 0, 0)).to.equal(2);
+    expect(series.valueAt(2, 0, 1)).to.equal(120);
+  });
+
   describe('#nth', () => {
 
     it('should return all values for index', () => {

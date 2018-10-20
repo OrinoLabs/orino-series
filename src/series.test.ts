@@ -9,7 +9,7 @@ describe('Series', () => {
   class ConcreteSeries extends Series {
     // Prevent TSC from complaining about non-implemented abstract properties.
     length: any;
-    nth: any;
+    value: any;
   }
 
   it('should manage dimensions', () => {
