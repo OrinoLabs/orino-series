@@ -67,7 +67,7 @@ describe('ArrayTimeSeries', () => {
   it('should construct', () => {
     const series = new ArrayTimeSeries([timeDimension, gnaDim], testData);
 
-    expect(series instanceof ArrayTimeSeries).to.equal(true);
+    expect(series).to.be.instanceOf(ArrayTimeSeries);
     expect(series.isTimeSeries).to.equal(true);
   });
 
