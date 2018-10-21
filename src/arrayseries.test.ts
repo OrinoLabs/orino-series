@@ -160,6 +160,14 @@ describe('ArrayTimeSeries', () => {
     expect(series.locatorForTime( 20)).to.equal(1.1);
     expect(series.locatorForTime( 60)).to.equal(1.5);
     expect(series.locatorForTime(110)).to.equal(2  );
+
+    series = new ArrayTimeSeries(
+        [timeDimension],
+        [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10]]);
+
+    expect(series.locatorForTime(0  )).to.equal(0);
+    expect(series.locatorForTime(3.4)).to.equal(3.4);
+    expect(series.locatorForTime(10 )).to.equal(10);
   });
 
   it('#atTime should return correct values', () => {

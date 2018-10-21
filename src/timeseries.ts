@@ -43,6 +43,11 @@ export function TimeSeriesMixin<T extends Type<Series>>(Base: T) {
     }
 
 
+    time(idx: number) {
+      return this.value(idx, this.timeDimensionIdx);
+    }
+
+
     // TODO: Define behavior for times outside range.
     atTime(t: number, dimensions?: Dimension[]): any[] {
       const locator = this.locatorForTime(t);
@@ -52,24 +57,29 @@ export function TimeSeriesMixin<T extends Type<Series>>(Base: T) {
 
     // TODO: Define behavior for times outside range.
     locatorForTime(t: number): number {
-      // TODO: Use binary search.
-      let idx = 0;
-      while (idx < this.length - 1) {
-        const tNext = this.value(idx + 1, this.timeDimensionIdx);
-        if (tNext <= t) {
-          idx += 1;
+      let left = 0;
+      let right = this.length - 1;
+      let middle = Math.floor((left + right) / 2);
+      while (left !== middle) {
+        const tm  = this.time(middle);
+        if (t < tm) {
+          right = middle;
         } else {
-          break;
+          left = middle;
         }
+        middle = Math.floor((left + right) / 2);
       }
+      const idx = (this.time(right) <= t) ? right : left;
+
       if (idx === this.length - 1) {
         return idx;
+      } else {
+        const t1 = this.time(idx);
+        const t2 = this.time(idx + 1);
+        const dt = t2 - t1;
+        const fraction = (t - t1) / dt;
+        return idx + fraction;  
       }
-      const t1 = this.value(idx, this.timeDimensionIdx);
-      const t2 = this.value(idx + 1, this.timeDimensionIdx);
-      const dt = t2 - t1;
-      const fraction = (t - t1) / dt;
-      return idx + fraction;
     }
 
   }
