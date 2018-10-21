@@ -128,4 +128,17 @@ describe('ArrayTimeSeries', () => {
       .to.throw(Error);
   });
 
+  it('should have correct start/end-time and duration', () => {
+    let series = new ArrayTimeSeries([timeDimension], [[0], [1], [2]]);
+
+    expect(series.startTime).to.equal(0);
+    expect(series.endTime).to.equal(2);
+    expect(series.duration).to.equal(2);
+
+    series = new ArrayTimeSeries([timeDimension], [[10], [13], [17]]);
+
+    expect(series.startTime).to.equal(10);
+    expect(series.endTime).to.equal(17);
+    expect(series.duration).to.equal(7);
+  })
 });

@@ -13,7 +13,7 @@ export abstract class Series {
   /**
    * Dimension indices by dimension id.
    */
-  private indices: {[id: string]: number};
+  protected indices: {[id: string]: number};
 
 
   constructor(dimensions: Dimension[]) {
