@@ -42,6 +42,36 @@ export function TimeSeriesMixin<T extends Type<Series>>(Base: T) {
       return this.endTime - this.startTime;
     }
 
+
+    // TODO: Define behavior for times outside range.
+    atTime(t: number, dimensions?: Dimension[]): any[] {
+      const locator = this.locatorForTime(t);
+      return this.at(locator, dimensions);
+    }
+
+
+    // TODO: Define behavior for times outside range.
+    locatorForTime(t: number): number {
+      // TODO: Use binary search.
+      let idx = 0;
+      while (idx < this.length - 1) {
+        const tNext = this.value(idx + 1, this.timeDimensionIdx);
+        if (tNext <= t) {
+          idx += 1;
+        } else {
+          break;
+        }
+      }
+      if (idx === this.length - 1) {
+        return idx;
+      }
+      const t1 = this.value(idx, this.timeDimensionIdx);
+      const t2 = this.value(idx + 1, this.timeDimensionIdx);
+      const dt = t2 - t1;
+      const fraction = (t - t1) / dt;
+      return idx + fraction;
+    }
+
   }
 
   return TimeSeriesImpl;

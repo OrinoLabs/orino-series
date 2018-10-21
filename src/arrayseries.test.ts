@@ -140,5 +140,42 @@ describe('ArrayTimeSeries', () => {
     expect(series.startTime).to.equal(10);
     expect(series.endTime).to.equal(17);
     expect(series.duration).to.equal(7);
-  })
+  });
+
+  it('#locatorForTime should return correct values', () => {
+    let series = new ArrayTimeSeries([timeDimension], [[0], [1], [2]]);
+
+    expect(series.locatorForTime(0  )).to.equal(0);
+    expect(series.locatorForTime(0.5)).to.equal(0.5);
+    expect(series.locatorForTime(1  )).to.equal(1);
+    expect(series.locatorForTime(1.3)).to.equal(1.3);
+    expect(series.locatorForTime(2  )).to.equal(2);
+
+    series = new ArrayTimeSeries([timeDimension], [[0], [10], [110]]);
+
+    expect(series.locatorForTime(  0)).to.equal(0  );
+    expect(series.locatorForTime(  1)).to.equal(0.1);
+    expect(series.locatorForTime(  5)).to.equal(0.5);
+    expect(series.locatorForTime( 10)).to.equal(1  );
+    expect(series.locatorForTime( 20)).to.equal(1.1);
+    expect(series.locatorForTime( 60)).to.equal(1.5);
+    expect(series.locatorForTime(110)).to.equal(2  );
+  });
+
+  it('#atTime should return correct values', () => {
+    let series = new ArrayTimeSeries(
+        [timeDimension, gnaDim],
+        [[0, 0], [1, 10], [2, 0]]);
+
+    let gnaAtTime = (t) => series.atTime(t, [gnaDim])[0];
+
+    expect(gnaAtTime(0  )).to.equal(0);
+    expect(gnaAtTime(0.1)).to.equal(1);
+    expect(gnaAtTime(0.5)).to.equal(5);
+    expect(gnaAtTime(1  )).to.equal(10);
+    expect(gnaAtTime(1.1)).to.equal(9);
+    expect(gnaAtTime(1.2)).to.equal(8);
+    expect(gnaAtTime(2  )).to.equal(0);
+  });
+
 });
