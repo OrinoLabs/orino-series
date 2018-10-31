@@ -186,4 +186,27 @@ describe('ArrayTimeSeries', () => {
     expect(gnaAtTime(2  )).to.equal(0);
   });
 
+  it('should respect BY_DIMENSION data order', () => {
+    let series = new ArrayTimeSeries(
+      [timeDimension, gnaDim],
+      [
+        [0, 1, 2, 3, 4, 5],
+        [10, 11, 12, 13, 14, 15],
+      ],
+      {
+        dataOrder: ArrayTimeSeries.DataOrder.BY_DIMENSION
+      });
+
+      expect(series.length).to.equal(6);
+      expect(series.value(0, 0)).to.equal(0);
+      expect(series.value(0, 1)).to.equal(10);
+      expect(series.value(1, 0)).to.equal(1);
+      expect(series.value(1, 1)).to.equal(11);
+      expect(series.nth(0)).to.deep.equal([0, 10]);
+      expect(series.nth(1)).to.deep.equal([1, 11]);
+      expect(series.nth(5)).to.deep.equal([5, 15]);
+      expect(series.at(0.5)).to.deep.equal([0.5, 10.5]);
+      expect(series.at(4.9)).to.deep.equal([4.9, 14.9]);
+  });
+
 });
