@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es2015", "dom"],
+    "rootDir": "{{ROOT_DIR}}/../src",
+    "outDir": "{{ROOT_DIR}}/../dist/goog",
+  },
+  "include": [
+    "{{ROOT_DIR}}/../src/*.ts"
+  ],
+  "exclude": [
+    "{{ROOT_DIR}}/../src/*.test.ts"
+  ]
+}
